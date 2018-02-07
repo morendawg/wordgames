@@ -123,32 +123,50 @@ Wharton.conjointTracker.beginTracking = function(loopNumber, correctAnswer, qual
     var seconds_before_hide = 0;
     var questionName =  _(qualtrics.getQuestionTextContainer()).text();
     var aChar = 65;
-      
+    var str = _('div.QuestionBody table tr label span').first().text()
+    var switches = 0;
+    var t0 =  Wharton.rel_time((new Date).getTime())
+    var currAnswer = "None"
+
     var additional_css = 
     ['<style> </style>'].join('\n');
     
     // Override some Bootstrap
     htmlTableString += additional_css
     qc.append(htmlTableString);
-    console.log('Is True ' + correctAnswer);
+
+    // STRING, TIME SPENT, TIMES SWITCHED, ACCURACY, COMPLETED
+
 
     _('div.QuestionBody table tr td input[type=radio]').click(function(e){
-          
-          console.log("Click event on " + _(e.target).siblings('label').find('span').text() + " at "+ Wharton.rel_time((new Date).getTime())/1000 + "s" );
+          _(qc).siblings().find('div input[type=text]').val("Click event on " + _(e.target).siblings('label').find('span').text() + " at "+ Wharton.rel_time((new Date).getTime()) );
+          currAnswer = _(e.target).siblings('label').find('span').text();
+          switches++;
     });
 
     if(seconds_before_hide > 0 ){
-        window.setTimeout(function(){
+        window.setTimeout(function() {
             _('thead, tbody').addClass('hidden');
             _('tfoot').removeClass('hidden');
             _('div#choose-msg').removeClass('hidden');
         }, (seconds_before_hide * 1000) );
-
     } 
     else {
         qualtrics.showNextButton();
         qc.append("<div class='QuestionText'>You may skip questions if you wish.</div>");
     }
+
+    _('#NextButton').click(function(e){
+        var t1 = Wharton.rel_time((new Date).getTime());
+        var t = (t1 - t0)/1000.0;
+        var currAns = (currAnswer==="Yes") ? 1 : (currAnswer==="No")? 0 : -1;
+        if (currAns == -1) {
+          console.log(str+","+t+","+switches+",0,0");
+        } else {
+          var a = currAns == correctAnswer ? 1 : 0;
+          console.log(str+","+t+","+switches+","+a+",1");
+        }
+    });
 
     _('td [id^=choose]').click(function(e) {
         current_events_data = _(e.target).closest('button').attr('log-text') + "|" + Wharton.rel_time((new Date).getTime()) + "|" + current_events_data; 
