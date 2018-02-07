@@ -1,0 +1,132 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+<head>
+<title>Word Scramble JavaScript - CROSS-BROWSER </title>
+<script language="JavaScript" type="text/javascript">
+<!--
+var word=new Array("LOVE", "HATE", "RAGE", "SLAP");
+var letter=new Array();
+var rand;
+var actual;
+var i;
+window.onload=main;
+function main()
+{
+  	getRand();
+	scrambleWord();
+	creatWord();
+}
+function scrambleWord()
+{
+ actual=word[rand];
+ Temp=word[rand].length;
+  for(var HUCKO=0;HUCKO<Temp+2;HUCKO++)// - Richard Hucko's JavaScript Effects -> www.DynamicScripts.tk
+	{
+	 RHUCKO1=HUCKO-1;
+	  letter[HUCKO]=word[rand].substring(RHUCKO1,RHUCKO1-1)
+	}
+	letter.sort();
+	word[rand]="";
+	for(var HUCKO=0;HUCKO<Temp+2;HUCKO++)
+	word[rand]+=letter[HUCKO];
+}
+function getRand()
+{
+  rand=Math.floor(Math.random()*word.length);
+}
+function creatWord()
+{
+ for(var x=0;x<word[rand].length+2;x++)
+ {
+  RHUCKO1=x-1;
+  a=document.createElement('a');
+	a.id="aid"+x;
+	a.className="scramble";
+	a.innerHTML=word[rand].substring(RHUCKO1,RHUCKO1-1);
+	a.href="javascript:append('"+x+"');";
+	document.getElementById('board').appendChild(a);
+ }
+}
+function creatWord2(x)
+{
+  RHUCKO1=x-1;
+  a=document.createElement('a');
+	a.id="aid2"+x;
+	a.className="scramble";
+	a.innerHTML=word[rand].substring(RHUCKO1,RHUCKO1-1);
+	a.href="javascript:retract('"+x+"');";
+	document.getElementById('assemble').appendChild(a);
+
+}
+function append(RHUCKO1)
+{
+  document.getElementById('aid'+RHUCKO1).style.visibility="hidden";
+	//document.getElementById('assemble').innerHTML+=document.getElementById('aid'+RHUCKO1).innerHTML;
+	creatWord2(RHUCKO1);
+}
+function retract(RHUCKO1)
+{
+  document.getElementById('aid'+RHUCKO1).style.visibility="visible";
+	elem=document.getElementById('aid2'+RHUCKO1);
+	document.getElementById('assemble').removeChild(elem);
+}
+function showWord()
+{
+  document.getElementById('theWord').innerHTML=actual;
+}
+//-->
+</script>
+<style type="text/css">
+<!--
+body {
+		  text-align:center;
+		 }
+a.scramble {
+					   	 font-family: "Helvetica", sans-serif;
+					   	 color:black;
+						 font-weight:bold;
+						 font-size:30;
+						 position:relative;
+					 }
+span#assemble {
+						 font-weight:bold;
+						 font-size:30;
+						 position:relative;
+						 background-color: green;
+
+						 }
+span#theWord {
+						 color:white;
+						 background-color:black;
+						 font-weight:bold;
+						 font-size:30;
+						 position:relative;
+						 border:2 inset gray;
+						 font-family: "Helvetica", sans-serif;
+
+						 }
+a:hover {
+				  background-color:black;
+					color:white;
+				}
+-->
+</style>
+</head>
+<body>
+<br />
+<span id="board"></span>
+<br /><br />
+<span id="assemble"></span>
+<br />
+<br />
+<span id="theWord"></span>
+<form>
+<input type="button" value="->See Word" onclick="showWord();" />
+<b style="visibility:hidden">__</b>
+<input type="button" value="Next" onclick="javascript:history.go(0);" />
+<div style="text-align:center;color:black;background-color:transparent;display:none;z-index:1;text-decoration:underline;">Word Scramble Cross-Browser JavaScript, Author: Richard Hucko (RHUCKO1), Web Site: www.DynamicScripts.tk, Category: Games, Browsers: All Newer Browsers</div>
+</form>
+</body>
+
+</html>
