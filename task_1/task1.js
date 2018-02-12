@@ -139,7 +139,6 @@ Wharton.conjointTracker.beginTracking = function(loopNumber, correctAnswer, qual
 
 
     _('div.QuestionBody table tr td input[type=radio]').click(function(e){
-          _(qc).siblings().find('div input[type=text]').val("Click event on " + _(e.target).siblings('label').find('span').text() + " at "+ Wharton.rel_time((new Date).getTime()) );
           currAnswer = _(e.target).siblings('label').find('span').text();
           switches++;
     });
@@ -161,10 +160,10 @@ Wharton.conjointTracker.beginTracking = function(loopNumber, correctAnswer, qual
         var t = (t1 - t0)/1000.0;
         var currAns = (currAnswer==="Yes") ? 1 : (currAnswer==="No")? 0 : -1;
         if (currAns == -1) {
-          console.log(str+","+t+","+switches+",0,0");
+          _(qc).siblings().find('div input[type=text]').val(str+","+t+","+switches+",0,0");
         } else {
           var a = currAns == correctAnswer ? 1 : 0;
-          console.log(str+","+t+","+switches+","+a+",1");
+          _(qc).siblings().find('div input[type=text]').val(str+","+t+","+switches+","+a+",1");
         }
     });
 
